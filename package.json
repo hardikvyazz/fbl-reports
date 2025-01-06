@@ -15,7 +15,8 @@
     "googleapis": "^144.0.0",
     "js-base64": "^3.7.7",
     "mailparser": "^3.7.1",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "open": "^10.1.0"
   },
   "description": ""
 }

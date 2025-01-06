@@ -12,29 +12,43 @@ const CREDENTIALS_PATH = 'credentials.json'; // Your credentials file
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
 async function authorize() {
-    const content = fs.readFileSync(CREDENTIALS_PATH);
-    const { client_secret, client_id, redirect_uris } = JSON.parse(content).web;
-    const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+    let oAuth2Client;
+    try {
+        const content = fs.readFileSync(CREDENTIALS_PATH);
+        const { client_secret, client_id, redirect_uris } = JSON.parse(content).web;
+        oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
-    const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES,
-    });
-
-    console.log('Authorize this app by visiting this url:', authUrl);
-
-    return new Promise((resolve, reject) => {
-        app.get('/oauth2callback', (req, res) => {
-            const code = req.query.code;
-            oAuth2Client.getToken(code, (err, token) => {
-                if (err) return reject('Error retrieving access token');
-                oAuth2Client.setCredentials(token);
-                fs.writeFileSync('token.json', JSON.stringify(token));
-                res.send('Authentication successful! You can close this tab.');
-                resolve(oAuth2Client);
+        // Check if there's a saved token
+        const tokenPath = 'token.json';
+        if (fs.existsSync(tokenPath)) {
+            const token = JSON.parse(fs.readFileSync(tokenPath));
+            oAuth2Client.setCredentials(token);
+            return oAuth2Client;
+        } else {
+            // If no token, authorize the user and save the token
+            const authUrl = oAuth2Client.generateAuthUrl({
+                access_type: 'offline',
+                scope: SCOPES,
             });
-        });
-    });
+
+            console.log('Authorize this app by visiting this url:', authUrl);
+            return new Promise((resolve, reject) => {
+                app.get('/oauth2callback', (req, res) => {
+                    const code = req.query.code;
+                    oAuth2Client.getToken(code, (err, token) => {
+                        if (err) return reject('Error retrieving access token');
+                        oAuth2Client.setCredentials(token);
+                        fs.writeFileSync(tokenPath, JSON.stringify(token));
+                        res.send('Authentication successful! You can close this tab.');
+                        resolve(oAuth2Client);
+                    });
+                });
+            });
+        }
+    } catch (error) {
+        console.error('Error during OAuth authorization:', error);
+        throw error;
+    }
 }
 
 async function processReports(auth) {
