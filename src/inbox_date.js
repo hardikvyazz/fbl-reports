@@ -39,8 +39,14 @@ async function authorize() {
 
 async function processReports(auth) {
     const gmail = google.gmail({ version: 'v1', auth });
+    // Generate dynamic filename with today's date
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const fileName = `fbl_reports_${formattedDate}.csv`;
+    console.log(fileName);
+    
     const csvWriter = createCsvWriter({
-        path: 'email_reports_test.csv',
+        path: fileName,
         header: [
             { id: 'Reporter', title: 'Reporter' },
             { id: 'Original_Sender', title: 'Original Sender' },
@@ -109,7 +115,7 @@ async function processReports(auth) {
     } while (pageToken);
 
     await csvWriter.writeRecords(emailData);
-    console.log('Email reports saved to email_reports.csv');
+    console.log(`Email reports saved to ${fileName}`);
 }
 
 async function main() {
