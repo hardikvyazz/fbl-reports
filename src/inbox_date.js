@@ -55,8 +55,13 @@ async function processReports(auth) {
     const gmail = google.gmail({ version: 'v1', auth });
     // Generate dynamic filename with today's date
     const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-    const fileName = `fbl_reports_${formattedDate}.csv`;
+    const todayDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const fileName = `data/fbl_reports_${todayDate}.csv`;
+
+    const sevenDay = new Date(today);
+    sevenDay.setDate(today.getDate() - 7); // Subtract 7 days
+    const sevenDaysAgo = sevenDay.toISOString().split('T')[0];
+    console.log(sevenDaysAgo);
     console.log(fileName);
     
     const csvWriter = createCsvWriter({
@@ -78,7 +83,7 @@ async function processReports(auth) {
             userId: 'me',
             pageToken: pageToken,
             maxResults: 100,
-            q: 'from:feedback@arf.mail.yahoo.com', // Filter for reports
+            q: `from:feedback@arf.mail.yahoo.com after:${sevenDaysAgo}`, // Filter for reports from the last 7 days
         });
         const messages = res.data.messages;
 
