@@ -1,20 +1,15 @@
-import express from "express";
 import { authenticateIMAP } from "./controllers/authController";
-import { fetchAndProcessEmails } from "./controllers/emailContriller"
-const app = express();
-const PORT = process.env.PORT || 3000;
+import { fetchAndProcessEmails } from "./controllers/emailController";
 
-app.get("/process-emails", async (req, res) => {
+async function startEmailProcessing() {
   try {
     const connection = await authenticateIMAP();
     await fetchAndProcessEmails(connection);
-    res.send("Emails processed successfully!");
+    console.log("Emails processed successfully!");
   } catch (error) {
-    console.error("Error in /process-emails route:", error);
-    res.status(500).send("Failed to process emails.");
+    console.error("Error processing emails:", error);
   }
-});
+}
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+// Start email processing as soon as the script is executed
+startEmailProcessing();
