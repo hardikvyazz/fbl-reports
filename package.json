@@ -12,7 +12,7 @@
   "dependencies": {
     "base64url": "^3.0.1",
     "csv-writer": "^1.6.0",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "googleapis": "^144.0.0",
     "js-base64": "^3.7.7",
     "mailparser": "^3.7.1",
@@ -21,6 +21,8 @@
   },
   "description": "",
   "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/imap-simple": "^4.2.9",
     "@types/node": "^22.12.0",
     "@typescript-eslint/eslint-plugin": "^8.22.0",
     "@typescript-eslint/parser": "^8.22.0",
