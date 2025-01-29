@@ -3,3 +3,4 @@ token.json
 node_modules
 data/*
 dist/*
+src/config/credentials.ts
