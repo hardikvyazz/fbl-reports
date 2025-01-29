@@ -9,6 +9,9 @@ export async function authenticateIMAP() {
       host: EMAIL_CONFIG.imapHost,
       port: EMAIL_CONFIG.imapPort,
       tls: true,
+      tlsOptions: {
+        rejectUnauthorized: false, // Ignore self-signed certificate
+      },
     },
   };
 
