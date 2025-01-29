@@ -6,7 +6,11 @@ export async function fetchAndProcessEmails(connection: any): Promise<void> {
   const mailbox = await connection.openBox("INBOX");
   const lastProcessedId = getLastProcessedId();
 
-  const searchCriteria = ["UNSEEN", ["SINCE", new Date()]]; // Fetch new emails since last processed
+  // Get the date 7 days ago
+const sevenDaysAgo = new Date();
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+  const searchCriteria = ["UNSEEN", ["SINCE", sevenDaysAgo]]; // Fetch new emails since last processed
   const fetchOptions = { bodies: "", markSeen: true };
 
   try {
