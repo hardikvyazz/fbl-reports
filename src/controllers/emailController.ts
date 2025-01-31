@@ -11,7 +11,7 @@ const sevenDaysAgo = new Date();
 sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
   const searchCriteria = ["UNSEEN", ["SINCE", sevenDaysAgo]]; // Fetch new emails since last processed
-  const fetchOptions = { bodies: "", markSeen: true };
+  const fetchOptions = { bodies: "", markSeen: false };
 
   try {
     const messages = await connection.search(searchCriteria, fetchOptions);
