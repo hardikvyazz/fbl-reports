@@ -7,7 +7,7 @@ export interface ParsedEmail {
     inboxDate: string;
   }
   
-  export function parseForwardedEmail(forwardedMessage: string): ParsedEmail {
+  export function parseForwardedEmail(forwardedMessage: string, inboxDate: string): ParsedEmail {
     const lines = forwardedMessage.split("\n");
     let originalSender = "";
     let originalRecipient = "";
@@ -27,7 +27,7 @@ export interface ParsedEmail {
       originalRecipient,
       domain,
       subject,
-      inboxDate: new Date().toLocaleString(), // Placeholder, will be replaced later
+      inboxDate // Placeholder, will be replaced later
     };
   }
   
