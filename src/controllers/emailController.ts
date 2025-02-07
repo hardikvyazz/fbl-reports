@@ -35,6 +35,6 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 14);
   } catch (error) {
     console.error("Error processing emails:", error);
   } finally {
-    await connection.closeBox();
+    await connection.end();
   }
 }
