@@ -8,7 +8,7 @@ export async function fetchAndProcessEmails(connection: any): Promise<void> {
 
   // Get the date 7 days ago
 const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 14);
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 1);
 
   const searchCriteria = ["UNSEEN", ["SINCE", sevenDaysAgo]]; // Fetch new emails since last processed
   const fetchOptions = { bodies: "", markSeen: false };
@@ -22,7 +22,6 @@ sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 14);
     for (const msg of messages) {
       const rawEmail = msg.parts[0].body;
       const inboxDate = msg.attributes.date?.toISOString() || "N/A"; 
-      console.log("Email received date:", inboxDate);
       
       const parsed = parseForwardedEmail(rawEmail, inboxDate);
 
