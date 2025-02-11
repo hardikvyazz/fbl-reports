@@ -3,4 +3,7 @@ token.json
 node_modules
 data/*
 dist/*
+creds/*
 src/config/credentials.ts
+python_src/*
+logs/*
