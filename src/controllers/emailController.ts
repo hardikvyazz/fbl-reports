@@ -10,7 +10,7 @@ export async function fetchAndProcessEmails(connection: any): Promise<void> {
 const sevenDaysAgo = new Date();
 sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 1);
 
-  const searchCriteria = ["UNSEEN", ["SINCE", sevenDaysAgo]]; // Fetch new emails since last processed
+  const searchCriteria = [["SINCE", sevenDaysAgo]]; // Fetch new emails since last processed
   const fetchOptions = { bodies: "", markSeen: false };
 
   try {
