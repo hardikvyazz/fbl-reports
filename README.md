@@ -1,33 +1,70 @@
-# Gmail Abuse Report Processor
+# Feedback Loop (FBL) Mail Processor
 
-A Node.js application that processes Gmail abuse reports and extracts key details such as the reporter's email, original sender, recipient, domain, and inbox date. The data is exported into a CSV file for easy analysis.
-
----
-
-## Features
-
-- Authenticate with Gmail using OAuth2.
-- Retrieve abuse reports filtered by sender.
-- Parse and extract information from emails (reporter, sender, recipient, domain, and inbox date).
-- Save extracted data to a CSV file.
-- Handles email pagination for large datasets.
-
----
+## Overview
+This project is a TypeScript-based mail processor designed to handle Feedback Loop (FBL) emails from providers like Yahoo and Microsoft. It connects to an email account via IMAP and processes FBL reports to help manage spam complaints.
 
 ## Prerequisites
-
-Before you begin, ensure you have the following installed on your system:
-
-- **Node.js**: v14.x or later
-- **npm**: Comes with Node.js
-- A **Google Cloud Project** with the Gmail API enabled
-- A `credentials.json` file downloaded from the [Google Cloud Console](https://console.cloud.google.com/).
-
----
+Ensure you have the following installed before proceeding:
+- Node.js (>=16.x)
+- npm (>=8.x)
 
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/hardikvyazz/gmail-abuse-reports.git
-   cd gmail-abuse-reports
+   ```sh
+   git clone <repo-url>
+   cd <repo-name>
+   ```
+
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+
+3. Configure email credentials:
+   - Inside the `src` folder, create a directory called `config`:
+     ```sh
+     mkdir -p src/config
+     ```
+   - Inside `config`, create a file named `credentials.ts`:
+     ```sh
+     touch src/config/credentials.ts
+     ```
+   - Open `src/config/credentials.ts` and paste the following content:
+     ```typescript
+     export const EMAIL_CONFIG = {
+         user: process.env.EMAIL || "your@fblmailaddress.com", // Email address
+         appPassword: process.env.APP_PASSWORD || "your app pass word", // App password
+         imapHost: "imap.gmail.com", // IMAP host
+         imapPort: 993, // IMAP port
+     };
+
+     export const reporterAddress = ""; //specify the email you are getting fbl from
+     ```
+
+4. Set up environment variables:
+   Create a `.env` file in the project root and add your email credentials:
+   ```env
+   EMAIL=your-email@example.com
+   APP_PASSWORD=your-app-password
+   ```
+
+## Running the Project
+To start processing FBL emails, run:
+```sh
+npm run start
+```
+
+Once the code has run, you will get a CSV file containing all the emails from the last processed time if present. If not present, it will read emails from the last 24 hours and store the data in a CSV file named `fbl_report_{today_date}.csv` inside the `data` folder. Make sure you create a `data` folder before running the script:
+```sh
+mkdir -p data
+```
+
+## License
+This project is licensed under the MIT License.
+
+## Contributing
+Pull requests are welcome! If you find any issues, feel free to open an issue or contribute to improving the project.
+
+## Author
+Maintained by Hardik Vyas
