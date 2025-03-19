@@ -1,3 +1,4 @@
+import { reporterAddress } from "../config/credentials";
 import { ParsedEmail, parseForwardedEmail } from "../utils/emailParser";
 import { writeEmailsToCsv } from "../services/csvWritter";
 import { getLastProcessedId, saveLastProcessedId } from "../services/stateService";
@@ -15,7 +16,7 @@ export async function fetchAndProcessEmails(connection: any): Promise<void> {
 
 
   // const searchCriteria = [["SINCE", lastProcessedId]]; // Fetch new emails since last processed
-  const searchCriteria = lastProcessedId ? [["UID", `${lastProcessedId}:*`]] : [["SINCE", twentyFourHoursAgoIst]];  // If: Last Processed ID else Fallback: Fetch last 24 hours
+  const searchCriteria = lastProcessedId ? [["UID", `${lastProcessedId}:*`], ["FROM", reporterAddress]] : [["SINCE", twentyFourHoursAgoIst], ["FROM", reporterAddress]];  // If: Last Processed ID else Fallback: Fetch last 24 hours
 
   const fetchOptions = { bodies: "", markSeen: false };
 

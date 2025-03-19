@@ -1,3 +1,5 @@
+import { reporterAddress } from "../config/credentials";
+
 export interface ParsedEmail {
   reporter: string;
   originalSender: string;
@@ -55,7 +57,7 @@ export function parseForwardedEmail(forwardedMessage: string, inboxDate: string)
   domain = originalSender.includes("@") ? originalSender.split("@")[1] : "N/A";
 
   return {
-      reporter: "feedback@arf.mail.yahoo.com",
+      reporter: reporterAddress,
       originalSender,
       originalRecipient,
       domain,
