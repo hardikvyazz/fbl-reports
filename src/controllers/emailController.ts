@@ -6,11 +6,17 @@ export async function fetchAndProcessEmails(connection: any): Promise<void> {
   const mailbox = await connection.openBox("INBOX");
   const lastProcessedId = getLastProcessedId();
 
-  // Get the date 7 days ago
-const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 1);
 
-  const searchCriteria = [["SINCE", sevenDaysAgo]]; // Fetch new emails since last processed
+  const nowUtc = new Date(); // Current time in UTC
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+  const nowIst = new Date(nowUtc.getTime() + istOffset); // Convert UTC to IST
+  
+  const twentyFourHoursAgoIst = new Date(nowIst.getTime() - 24 * 60 * 60 * 1000); //24 hours age in IST
+
+
+  // const searchCriteria = [["SINCE", lastProcessedId]]; // Fetch new emails since last processed
+  const searchCriteria = lastProcessedId ? [["UID", `${lastProcessedId}:*`]] : [["SINCE", twentyFourHoursAgoIst]];  // If: Last Processed ID else Fallback: Fetch last 24 hours
+
   const fetchOptions = { bodies: "", markSeen: false };
 
   try {

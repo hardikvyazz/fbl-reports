@@ -6,6 +6,7 @@ export interface ParsedEmail {
   subject: string;
   inboxDate: string;
   messageId: string;
+  x_listmonk_campaign: string;
 }
 
 export function parseForwardedEmail(forwardedMessage: string, inboxDate: string): ParsedEmail {
@@ -15,6 +16,7 @@ export function parseForwardedEmail(forwardedMessage: string, inboxDate: string)
   let subject = "N/A";
   let messageId = "N/A";
   let domain = "N/A";
+  let x_listmonk_campaign = "N/A";
 
   let insideOriginalHeaders = false;
   let potentialMessageId = "N/A";
@@ -40,6 +42,9 @@ export function parseForwardedEmail(forwardedMessage: string, inboxDate: string)
           if (line.toLowerCase().startsWith("subject:")) {
               subject = line.split(":")[1]?.trim() || "N/A";
           }
+          if (line.toLowerCase().startsWith("x-listmonk-campaign:")) {
+            x_listmonk_campaign = line.split(":")[1]?.trim() || "N/A";
+        }
       }
   });
 
@@ -56,6 +61,7 @@ export function parseForwardedEmail(forwardedMessage: string, inboxDate: string)
       domain,
       subject,
       inboxDate,
-      messageId
+      messageId,
+      x_listmonk_campaign
   };
 }

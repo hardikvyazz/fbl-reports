@@ -15,7 +15,8 @@ export async function writeEmailsToCsv(emails: ParsedEmail[]): Promise<void> {
       { id: "domain", title: "Domain" },
       { id: "subject", title: "Subject Line" },
       { id: "inboxDate", title: "Inbox Date" },
-      {id: "messageId", title: "Message ID" }
+      {id: "messageId", title: "Message ID" },
+      {id: "x_listmonk_campaign", title: "Listmonk Campaign" },
     ],
   });
 
