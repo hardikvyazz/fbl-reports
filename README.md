@@ -12,7 +12,7 @@ Ensure you have the following installed before proceeding:
 
 1. Clone the repository:
    ```sh
-   git clone <repo-url>
+   git clone https://github.com/hardikvyazz/fbl-reports.git
    cd <repo-name>
    ```
 
